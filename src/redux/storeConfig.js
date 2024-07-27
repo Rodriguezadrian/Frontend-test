@@ -1,5 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import userSlice from "./userSlice";
+import logsSlice from "./logsSlice";
 import {
   persistReducer,
   FLUSH,
@@ -14,6 +15,7 @@ import { combineReducers } from "redux";
 
 const rootReducer = combineReducers({
   user: userSlice,
+  logs: logsSlice,
 });
 
 const persistConfig = { key: "root", storage };

@@ -17,11 +17,22 @@ function Register() {
   const [firstname, setFirstname] = useState("");
   const [lastname, setLastname] = useState("");
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    // Here you would typically send the email and password to your server
-    console.log("Email:", email);
-    console.log("Password:", password);
+  const handleRegister = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios({
+        url: `${import.meta.env.VITE_API_URL}/token/admin`,
+        method: "post",
+        data: { email, password, firstname, lastname },
+      });
+
+      if (response.data.token) {
+        dispatch(login(response.data));
+        navigate("/");
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -60,7 +71,7 @@ function Register() {
             Register
           </Typography>
         </Box>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleRegister}>
           <FormControl>
             <FormLabel>Firstname</FormLabel>
             <Input
@@ -110,11 +121,16 @@ function Register() {
               Register
             </Button>
             <Typography sx={{ mt: 1 }} type="submit">
-              <Link  style={{
-                      textDecoration: "none",
-                      color: "#1976d2",
-                      fontWeight: "bold",
-                    }} to={"/login"}>Already have an account?</Link>
+              <Link
+                style={{
+                  textDecoration: "none",
+                  color: "#1976d2",
+                  fontWeight: "bold",
+                }}
+                to={"/login"}
+              >
+                Already have an account?
+              </Link>
             </Typography>
           </Box>
         </form>

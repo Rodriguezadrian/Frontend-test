@@ -13,9 +13,11 @@ import MenuIcon from "@mui/icons-material/Menu";
 import { Box, Button, ListItemButton, ListItemContent } from "@mui/joy";
 import { Link } from "react-router-dom";
 import { logout } from "../redux/userSlice";
+import { resetInfo } from "../redux/logsSlice";
 import axios from "axios";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { useDispatch, useSelector } from "react-redux";
+import AddIcon from "@mui/icons-material/Add";
 
 const Sidebar = () => {
   const user = useSelector((state) => state.user);
@@ -36,6 +38,9 @@ const Sidebar = () => {
       const response = await axios({
         url: `${import.meta.env.VITE_API_URL}/database/destroy`,
         method: "delete",
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
       });
       setProgress(100);
       console.log("database erased successfully");
@@ -54,6 +59,9 @@ const Sidebar = () => {
       const response = await axios({
         url: `${import.meta.env.VITE_API_URL}/database/run-seeders`,
         method: "post",
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
       });
       setProgress(100);
 
@@ -70,6 +78,7 @@ const Sidebar = () => {
     e.preventDefault();
     try {
       dispatch(logout());
+      dispatch(resetInfo());
     } catch (error) {
       console.log(error);
     }
@@ -106,6 +115,15 @@ const Sidebar = () => {
         >
           <ListItem>
             <ListItemText primary="New" />
+          </ListItem>
+        </Link>
+        <Link
+          onClick={() => toggleDrawer()}
+          to="/logs"
+          style={{ textDecoration: "none", color: "inherit" }}
+        >
+          <ListItem>
+            <ListItemText primary="Logs" />
           </ListItem>
         </Link>
 

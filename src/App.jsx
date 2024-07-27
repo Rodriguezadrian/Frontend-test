@@ -13,8 +13,8 @@ import Product from "./pages/Product";
 import EditProduct from "./pages/EditProduct";
 import NewCellphone from "./pages/NewCellphone";
 import { useState } from "react";
-import DatabaseProgress from "./components/DatabaseProgress";
 import { useSelector } from "react-redux";
+
 import Logs from "./pages/Logs";
 
 function App() {
@@ -38,10 +38,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/" element={<ProtectedRoute />}>
-          <Route
-            index
-            element={<Home toggleDataProgress={toggleDataProgress} />}
-          />
+          <Route index element={<Home  />} />
           <Route path="/cellphones/:id" element={<Product />} />
           <Route path="/edit/:id" element={<EditProduct />} />
           <Route path="/add/" element={<NewCellphone />} />

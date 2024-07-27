@@ -11,6 +11,7 @@ import {
   FormLabel,
 } from "@mui/joy";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import axios from "axios";
 
 const NewCellphone = () => {
@@ -20,20 +21,20 @@ const NewCellphone = () => {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
-    name: "",
-    description: "",
-    operating_system: "",
-    image: "",
-    brand: "",
-    price: "",
-    processor: "",
-    ram: "",
-    storage: "",
-    weight: "",
-    display: "",
-    resolution: "",
-    cameras: "",
-    battery: "",
+    name: "Iphone 11",
+    description: "the best one",
+    operating_system: "ios",
+    image: "www.iphone.com",
+    brand: "Apple",
+    price: "100",
+    processor: "A10",
+    ram: "8",
+    storage: "64gb",
+    weight: "200",
+    display: "oled",
+    resolution: "1024",
+    cameras: "4",
+    battery: "3000",
   });
 
   const handleChange = (e) => {
@@ -49,6 +50,9 @@ const NewCellphone = () => {
       const response = await axios({
         url: `${import.meta.env.VITE_API_URL}/client/add`,
         method: "post",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
         data: {
           name: formData.name,
           description: formData.description,
@@ -84,7 +88,7 @@ const NewCellphone = () => {
       }}
     >
       <Typography variant="h4" component="h1" sx={{ marginBottom: 2 }}>
-        Edit Product
+        Add new Cellphone
       </Typography>
 
       <Card
@@ -98,14 +102,26 @@ const NewCellphone = () => {
             autoComplete="off"
             sx={{ display: "flex", flexDirection: "column", gap: 2 }}
           >
-            <Box sx={{ display: "flex", justifyContent: "center" }}>
-              <Link to={"/"}>Back</Link>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+              }}
+            >
+              <ArrowBackIcon />
+              <Link
+                style={{ textDecoration: "none", color: "#5d24dd" }}
+                to={"/"}
+              >
+                Back
+              </Link>
             </Box>
             <FormControl>
               <FormLabel>Name</FormLabel>
               <Input
                 label="Name"
                 variant="outlined"
+                placeholder="Iphone 11"
                 name="name"
                 value={formData.name || ""}
                 onChange={handleChange}
@@ -116,10 +132,11 @@ const NewCellphone = () => {
               <Input
                 label="Description"
                 variant="outlined"
+                placeholder="Top 10 cellphones selled in Latinamerica"
                 name="description"
                 value={formData.description || ""}
                 onChange={handleChange}
-                multiline
+                multiline="true"
                 rows={4}
               />
             </FormControl>
@@ -129,6 +146,7 @@ const NewCellphone = () => {
                 label="Operating System"
                 variant="outlined"
                 name="operating_system"
+                placeholder="ios"
                 value={formData.operating_system || ""}
                 onChange={handleChange}
               />
@@ -140,6 +158,7 @@ const NewCellphone = () => {
                 label="Image URL"
                 variant="outlined"
                 name="image"
+                placeholder="image.url"
                 value={formData.image || ""}
                 onChange={handleChange}
               />
@@ -150,6 +169,7 @@ const NewCellphone = () => {
               <Input
                 label="Brand"
                 variant="outlined"
+                placeholder="Apple"
                 name="brand"
                 value={formData.brand || ""}
                 onChange={handleChange}
@@ -162,6 +182,7 @@ const NewCellphone = () => {
                 label="Price"
                 variant="outlined"
                 name="price"
+                placeholder="100 (number)"
                 type="number"
                 value={formData.price || ""}
                 onChange={handleChange}
@@ -173,6 +194,7 @@ const NewCellphone = () => {
               <Input
                 label="Processor"
                 variant="outlined"
+                placeholder="A10"
                 name="processor"
                 value={formData.processor || ""}
                 onChange={handleChange}
@@ -185,6 +207,7 @@ const NewCellphone = () => {
                 label="RAM (GB)"
                 variant="outlined"
                 name="ram"
+                placeholder="8"
                 type="number"
                 value={formData.ram || ""}
                 onChange={handleChange}
@@ -197,6 +220,7 @@ const NewCellphone = () => {
                 label="Storage (GB)"
                 variant="outlined"
                 name="storage"
+                placeholder="6"
                 type="number"
                 value={formData.storage || ""}
                 onChange={handleChange}
@@ -209,6 +233,7 @@ const NewCellphone = () => {
                 label="Weight (g)"
                 variant="outlined"
                 name="weight"
+                placeholder="200 (g)"
                 type="number"
                 value={formData.weight || ""}
                 onChange={handleChange}
@@ -220,6 +245,7 @@ const NewCellphone = () => {
               <Input
                 label="Display"
                 variant="outlined"
+                placeholder="6.1 inches OLED"
                 name="display"
                 value={formData.display || ""}
                 onChange={handleChange}
@@ -231,6 +257,7 @@ const NewCellphone = () => {
               <Input
                 label="Resolution"
                 variant="outlined"
+                placeholder="2532 x 1170"
                 name="resolution"
                 value={formData.resolution || ""}
                 onChange={handleChange}
@@ -243,6 +270,7 @@ const NewCellphone = () => {
                 label="Cameras"
                 variant="outlined"
                 name="cameras"
+                placeholder="4"
                 value={formData.cameras || ""}
                 onChange={handleChange}
               />
@@ -254,12 +282,13 @@ const NewCellphone = () => {
                 label="Battery (mAh)"
                 variant="outlined"
                 name="battery"
+                placeholder="3095"
                 type="number"
                 value={formData.battery || ""}
                 onChange={handleChange}
               />
             </FormControl>
-            <Button variant="contained" color="primary" onClick={handleSave}>
+            <Button variant="solid" color="success" onClick={handleSave}>
               Save Changes
             </Button>
           </Box>

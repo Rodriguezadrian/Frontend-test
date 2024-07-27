@@ -1,21 +1,21 @@
 import React, { useEffect, useState } from "react";
 import {
   Container,
-  Box,
   Typography,
-  Stack,
-  Divider,
   Grid,
   Avatar,
   Card,
   CardContent,
+  Box,
 } from "@mui/joy";
 import { Link, useParams } from "react-router-dom";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+
 import axios from "axios";
 
 const Product = () => {
   const [productDetails, setProductDetails] = useState([]);
-  // Datos de ejemplo del producto
+
   const product = {
     name: "",
     image: "",
@@ -79,13 +79,13 @@ const Product = () => {
             Specifications
           </Typography>
           <Grid container spacing={1}>
-            <Grid item xs={6}>
+            <Grid item="true" xs={6}>
               <Typography variant="body2" sx={{ fontWeight: "bold" }}>
                 Brand:
               </Typography>
               <Typography variant="body2">{productDetails.brand}</Typography>
             </Grid>
-            <Grid item xs={6}>
+            <Grid item="true" xs={6}>
               <Typography variant="body2" sx={{ fontWeight: "bold" }}>
                 Processor:
               </Typography>
@@ -93,13 +93,13 @@ const Product = () => {
                 {productDetails.processor}
               </Typography>
             </Grid>
-            <Grid item xs={6}>
+            <Grid item="true" xs={6}>
               <Typography variant="body2" sx={{ fontWeight: "bold" }}>
                 RAM:
               </Typography>
               <Typography variant="body2">{productDetails.ram} GB</Typography>
             </Grid>
-            <Grid item xs={6}>
+            <Grid item="true" xs={6}>
               <Typography variant="body2" sx={{ fontWeight: "bold" }}>
                 Storage:
               </Typography>
@@ -107,19 +107,19 @@ const Product = () => {
                 {productDetails.storage} GB
               </Typography>
             </Grid>
-            <Grid item xs={6}>
+            <Grid item="true" xs={6}>
               <Typography variant="body2" sx={{ fontWeight: "bold" }}>
                 Weight:
               </Typography>
               <Typography variant="body2">{productDetails.weight} g</Typography>
             </Grid>
-            <Grid item xs={6}>
+            <Grid item="true" xs={6}>
               <Typography variant="body2" sx={{ fontWeight: "bold" }}>
                 Display:
               </Typography>
               <Typography variant="body2">{productDetails.display}</Typography>
             </Grid>
-            <Grid item xs={6}>
+            <Grid item="true" xs={6}>
               <Typography variant="body2" sx={{ fontWeight: "bold" }}>
                 Resolution:
               </Typography>
@@ -127,13 +127,13 @@ const Product = () => {
                 {productDetails.resolution}
               </Typography>
             </Grid>
-            <Grid item xs={6}>
+            <Grid item="true" xs={6}>
               <Typography variant="body2" sx={{ fontWeight: "bold" }}>
                 Cameras:
               </Typography>
               <Typography variant="body2">{productDetails.cameras}</Typography>
             </Grid>
-            <Grid item xs={6}>
+            <Grid item="true" xs={6}>
               <Typography variant="body2" sx={{ fontWeight: "bold" }}>
                 Battery:
               </Typography>
@@ -141,7 +141,7 @@ const Product = () => {
                 {productDetails.battery} mAh
               </Typography>
             </Grid>
-            <Grid item xs={12}>
+            <Grid item="true" xs={12}>
               <Typography variant="body2" sx={{ fontWeight: "bold" }}>
                 Operating System:
               </Typography>
@@ -149,11 +149,16 @@ const Product = () => {
                 {productDetails.operating_system}
               </Typography>
             </Grid>
-            <Grid item xs={12}></Grid>
+            <Grid item="true" xs={12}></Grid>
           </Grid>
         </CardContent>
       </Card>
-      <Link to={"/"}>Back</Link>
+      <Box sx={{ display: "flex", justifyContent: "center" }}>
+        <ArrowBackIcon />
+        <Link style={{ textDecoration: "none" }} to={"/"}>
+          Back
+        </Link>
+      </Box>
     </Container>
   );
 };

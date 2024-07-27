@@ -15,12 +15,16 @@ import axios from "axios";
 import TitleApp from "../components/TitleApp";
 import { Link } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
+import { storeInfo } from "../redux/logsSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 function Home() {
+  const logs = useSelector((state) => state.logs);
   const [cellphones, setCellPhones] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [product, setProduct] = useState([]);
   const [productDeleted, setProductDeleted] = useState(false);
+  const dispatch = useDispatch();
 
   const items_Per_Page = 3;
   const totalPages = Math.ceil(cellphones.length / items_Per_Page);
@@ -52,15 +56,17 @@ function Home() {
       const response = await axios({
         url: `${import.meta.env.VITE_API_URL}/client/${id}`,
         method: "delete",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       });
       setProduct(product.filter((product) => product.id !== id));
-      setProductDeleted({ product: response.data }, true);
+      setProductDeleted(dispatch(storeInfo(response.data.cellphoneDeleted)));
       console.log("Product deleted");
     } catch (error) {
       console.error("Error deleting product:", error);
     }
   };
-  console.log(productDeleted);
   return (
     <>
       <Sidebar />
