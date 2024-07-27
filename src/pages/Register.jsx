@@ -10,25 +10,23 @@ import {
 } from "@mui/joy";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 function Register() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [firstname, setFirstname] = useState("");
-  const [lastname, setLastname] = useState("");
 
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
       const response = await axios({
-        url: `${import.meta.env.VITE_API_URL}/token/admin`,
+        url: `${import.meta.env.VITE_API_URL}/admins`,
         method: "post",
-        data: { email, password, firstname, lastname },
+        data: { email, password },
       });
 
-      if (response.data.token) {
-        dispatch(login(response.data));
-        navigate("/");
+      if (response.data) {
+        navigate("/login");
       }
     } catch (error) {
       console.log(error);
@@ -72,24 +70,6 @@ function Register() {
           </Typography>
         </Box>
         <form onSubmit={handleRegister}>
-          <FormControl>
-            <FormLabel>Firstname</FormLabel>
-            <Input
-              name="firstname"
-              type="text"
-              value={firstname}
-              onChange={(e) => setFirstname(e.target.value)}
-            />
-          </FormControl>
-          <FormControl>
-            <FormLabel>Lastname</FormLabel>
-            <Input
-              name="lastname"
-              type="text"
-              value={lastname}
-              onChange={(e) => setLastname(e.target.value)}
-            />
-          </FormControl>
           <FormControl>
             <FormLabel>Email</FormLabel>
             <Input

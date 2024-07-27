@@ -190,7 +190,7 @@ const Sidebar = () => {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6">Navbar</Typography>
+          <Typography variant="h6">CellZone</Typography>
         </Toolbar>
       </AppBar>
 
