@@ -13,19 +13,23 @@ import LockIcon from "@mui/icons-material/Lock";
 import { Link, useNavigate } from "react-router-dom";
 import { login } from "../redux/userSlice";
 import axios from "axios";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 function Login() {
-  const [email, setEmail] = useState("admin@gmail.com");
-  const [password, setPassword] = useState("1234");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [isAdmin, setIsAdmin] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
+      const url = isAdmin
+        ? `${import.meta.env.VITE_API_URL}/token/admin`
+        : `${import.meta.env.VITE_API_URL}/token/user`;
       const response = await axios({
-        url: `${import.meta.env.VITE_API_URL}/token/admin`,
+        url: url,
         method: "post",
         data: { email, password },
       });
