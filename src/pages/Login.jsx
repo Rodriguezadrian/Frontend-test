@@ -35,17 +35,23 @@ function Login() {
         method: "post",
         data: { email, password },
       });
-      
+
       if (response.data.token) {
         dispatch(login(response.data));
         navigate("/");
-      } else if (response.data.msg) {
-        setError(response.data.msg);
+      } else {
+        setError("Login failed. Please check your credentials.");
       }
     } catch (error) {
+      if (error.response && error.response.data && error.response.data.msg) {
+        setError(error.response.data.msg);
+      } else {
+        setError("An error occurred. Please try again.");
+      }
       console.log(error);
     }
   };
+
   return (
     <Sheet
       sx={{
