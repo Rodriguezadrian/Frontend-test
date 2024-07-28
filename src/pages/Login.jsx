@@ -18,13 +18,15 @@ import { useDispatch } from "react-redux";
 function Login() {
   const [email, setEmail] = useState("admin@gmail.com");
   const [password, setPassword] = useState("1234");
-  const [isAdmin, setIsAdmin] = useState(false);
+  const [error, setError] = useState("");
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    setError("");
     try {
+      const isAdmin = email === "admin@gmail.com";
       const url = isAdmin
         ? `${import.meta.env.VITE_API_URL}/token/admin`
         : `${import.meta.env.VITE_API_URL}/token/user`;
@@ -37,12 +39,13 @@ function Login() {
       if (response.data.token) {
         dispatch(login(response.data));
         navigate("/");
+      } else if (response.data.msg) {
+        setError(response.data.msg);
       }
     } catch (error) {
       console.log(error);
     }
   };
-
   return (
     <Sheet
       sx={{
