@@ -16,8 +16,8 @@ import axios from "axios";
 import { useDispatch } from "react-redux";
 
 function Login() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("admin@gmail.com");
+  const [password, setPassword] = useState("1234");
   const [isAdmin, setIsAdmin] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -85,7 +85,6 @@ function Login() {
             <Input
               name="email"
               type="email"
-              placeholder="johndoe@email.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
@@ -95,7 +94,6 @@ function Login() {
             <Input
               name="password"
               type="password"
-              placeholder="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
