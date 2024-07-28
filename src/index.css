@@ -8,6 +8,18 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-.product-filter{
+.product-filter {
   background: red;
+}
+.button-navbar {
+  background-color: #6c36f1 !important;
+}
+.button-navbar:hover {
+  background: linear-gradient(#6c36f1, #5d24dd);
+}
+.logout-button {
+  background: #6c36f1 !important ;
+}
+#logout-button:hover {
+  background: linear-gradient(#6c36f1, #5d24dd) !important;
 }

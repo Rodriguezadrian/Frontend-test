@@ -8,9 +8,9 @@ import {
   AppBar,
   Toolbar,
   Typography,
+  LinearProgress,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import { LinearProgress } from "@mui/material";
 import { Box, Button, ListItemButton, ListItemContent } from "@mui/joy";
 import { Link } from "react-router-dom";
 import { logout } from "../redux/userSlice";
@@ -32,7 +32,7 @@ const Sidebar = () => {
     setOpen(!open);
   };
 
-  const handleDeleteDB = async (e) => {
+  const handleDeleteDB = async () => {
     try {
       setLoading(true);
       setProgress(0);
@@ -46,6 +46,7 @@ const Sidebar = () => {
           return Math.min(oldProgress + 10, 90);
         });
       }, 500);
+
       const response = await axios({
         url: `${import.meta.env.VITE_API_URL}/database/destroy`,
         method: "delete",
@@ -53,9 +54,10 @@ const Sidebar = () => {
           Authorization: `Bearer ${user.token}`,
         },
       });
+
       clearInterval(interval);
       setProgress(100);
-      console.log("database erased successfully");
+      console.log("Database erased successfully");
       setDeletedProducts(response.data);
     } catch (error) {
       setProgress(0);
@@ -64,7 +66,8 @@ const Sidebar = () => {
       setLoading(false);
     }
   };
-  const handleRunDB = async (e) => {
+
+  const handleRunDB = async () => {
     try {
       const response = await axios({
         url: `${import.meta.env.VITE_API_URL}/database/run-seeders`,
@@ -73,7 +76,7 @@ const Sidebar = () => {
           Authorization: `Bearer ${user.token}`,
         },
       });
-      console.log("database created successfully");
+      console.log("Database created successfully");
     } catch (error) {
       console.log(`Error creating the database`, error);
     }
@@ -94,8 +97,11 @@ const Sidebar = () => {
       sx={{
         width: 250,
         padding: 2,
-        backgroundColor: "#f4f4f4",
+        backgroundColor: "#bdb3ff",
         height: "100%",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between",
       }}
     >
       <List>
@@ -110,7 +116,9 @@ const Sidebar = () => {
           style={{ textDecoration: "none", color: "inherit" }}
         >
           <ListItem>
-            <ListItemText primary="Home" />
+            <ListItemText>
+              <Button className="button-navbar">Home</Button>
+            </ListItemText>
           </ListItem>
         </Link>
         <Link
@@ -119,7 +127,9 @@ const Sidebar = () => {
           style={{ textDecoration: "none", color: "inherit" }}
         >
           <ListItem>
-            <ListItemText primary="New" />
+            <ListItemText>
+              <Button className="button-navbar">New Cell</Button>
+            </ListItemText>
           </ListItem>
         </Link>
         <Link
@@ -128,22 +138,17 @@ const Sidebar = () => {
           style={{ textDecoration: "none", color: "inherit" }}
         >
           <ListItem>
-            <ListItemText primary="Logs" />
+            <ListItemText>
+              <Button className="button-navbar">Logs</Button>
+            </ListItemText>
           </ListItem>
         </Link>
-
-        <Box
-          sx={{
-            display: "flex",
-
-            flexDirection: "column",
-            justifyContent: "flex-end",
-          }}
-        >
+      </List>
+      <Box>
+        <List>
           <ListItem onClick={() => handleRunDB()}>
             <Button color="success">Run Database</Button>
           </ListItem>
-
           <ListItem onClick={() => handleDeleteDB()}>
             <Button color="danger">Delete Database</Button>
           </ListItem>
@@ -164,22 +169,19 @@ const Sidebar = () => {
               </Box>
             </ListItem>
           )}
-        </Box>
+        </List>
         {user.token ? (
           <ListItem>
-            <ListItemButton>
-              <LogoutIcon />
-              <ListItemContent>
-                <Typography onClick={handleLogout} level="title-sm">
-                  Log out
-                </Typography>
-              </ListItemContent>
-            </ListItemButton>
+            <ListItemContent>
+              <Button className="logout-button" onClick={handleLogout}>
+                <LogoutIcon />
+                Log out
+              </Button>
+            </ListItemContent>
           </ListItem>
         ) : (
           <ListItem>
             <ListItemButton>
-              <LoginOutlined />
               <ListItemContent>
                 <Typography level="title-sm">
                   <Link
@@ -193,7 +195,7 @@ const Sidebar = () => {
             </ListItemButton>
           </ListItem>
         )}
-      </List>
+      </Box>
     </Box>
   );
 
@@ -201,7 +203,7 @@ const Sidebar = () => {
     <Box>
       <AppBar
         position="fixed"
-        sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        sx={{ zIndex: (theme) => theme.zIndex.drawer + 1, background:"#6c36f1" }}
       >
         <Toolbar>
           <IconButton

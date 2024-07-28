@@ -158,7 +158,7 @@ function Home() {
             No products found.
           </Typography>
         ) : (
-          "false"
+          ""
         )}
         <Grid alignItems={"center"} container spacing={2}>
           {paginatedPhones.map((phone) => (
@@ -230,7 +230,7 @@ function Home() {
                     <Link to={`/edit/${phone.id}`}>
                       <Button
                         variant="solid"
-                        color="primary"
+                        className="button-navbar"
                         fullWidth
                         sx={{
                           borderRadius: "md",
@@ -259,15 +259,13 @@ function Home() {
               </Card>
             </Grid>
           ))}
-          {emptyItems > 0 &&
-            Array.from({ length: emptyItems }).map((_, index) => (
-              <Grid key={`empty-${index}`} item="true" xs={12} sm={6} md={4} />
-            ))}
+          
         </Grid>
 
         <Box sx={{ display: "flex", justifyContent: "center", marginTop: 2 }}>
           <Button
             disabled={currentPage === 1}
+            className="button-navbar"
             onClick={() => handleChangePage(currentPage - 1)}
           >
             Previous
@@ -277,6 +275,7 @@ function Home() {
           </Typography>
           <Button
             disabled={currentPage === totalPages}
+            className="button-navbar"
             onClick={() => handleChangePage(currentPage + 1)}
           >
             Next
