@@ -144,14 +144,22 @@ const Sidebar = () => {
           </ListItem>
         </Link>
       </List>
+
       <Box>
         <List>
-          <ListItem onClick={() => handleRunDB()}>
-            <Button color="success">Run Database</Button>
-          </ListItem>
-          <ListItem onClick={() => handleDeleteDB()}>
-            <Button color="danger">Delete Database</Button>
-          </ListItem>
+          {user.email === "admin@gmail.com" ? (
+            <>
+              <ListItem onClick={() => handleRunDB()}>
+                <Button color="success">Run Database</Button>
+              </ListItem>
+              <ListItem onClick={() => handleDeleteDB()}>
+                <Button color="danger">Delete Database</Button>
+              </ListItem>
+            </>
+          ) : (
+            ""
+          )}
+
           {loading && (
             <ListItem>
               <Box
@@ -203,7 +211,10 @@ const Sidebar = () => {
     <Box>
       <AppBar
         position="fixed"
-        sx={{ zIndex: (theme) => theme.zIndex.drawer + 1, background:"#6c36f1" }}
+        sx={{
+          zIndex: (theme) => theme.zIndex.drawer + 1,
+          background: "#6c36f1",
+        }}
       >
         <Toolbar>
           <IconButton
