@@ -18,7 +18,7 @@ import axios from "axios";
 import TitleApp from "../components/TitleApp";
 import Sidebar from "../components/Sidebar";
 import { Link } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 function Home() {
   const logs = useSelector((state) => state.logs);
@@ -29,7 +29,6 @@ function Home() {
   const [productDeleted, setProductDeleted] = useState(false);
   const [products, setProducts] = useState([]);
   const [cellphonesFiltered, setCellPhonesFiltered] = useState([]);
-  const dispatch = useDispatch();
 
   const items_Per_Page = 3;
   const totalPages = Math.ceil(cellphonesFiltered.length / items_Per_Page);
@@ -50,7 +49,7 @@ function Home() {
         });
         setCellPhones(response.data);
         setProducts(response.data);
-        setCellPhonesFiltered(response.data); // Inicialmente mostramos todos los celulares
+        setCellPhonesFiltered(response.data);
       } catch (error) {
         console.error("Error fetching cellphones:", error);
       }
@@ -60,7 +59,7 @@ function Home() {
   }, [productDeleted]);
 
   useEffect(() => {
-    handleSearchChange({ target: { value: inputValue } }); // Actualiza los resultados filtrados al cargar
+    handleSearchChange({ target: { value: inputValue } });
   }, [cellphones, inputValue, selectedBrand]);
 
   const handleChangePage = (newPage) => {
@@ -154,7 +153,13 @@ function Home() {
             ))}
           </Select>
         </Box>
-
+        {paginatedPhones.length === 0 ? (
+          <Typography marginBottom={40} level="h3" sx={{ marginTop: 2 }}>
+            No products found.
+          </Typography>
+        ) : (
+          "false"
+        )}
         <Grid alignItems={"center"} container spacing={2}>
           {paginatedPhones.map((phone) => (
             <Grid key={phone.id} item="true" xs={12} sm={6} md={4}>
