@@ -10,6 +10,7 @@ import {
   Typography,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
+import { LinearProgress } from "@mui/material";
 import { Box, Button, ListItemButton, ListItemContent } from "@mui/joy";
 import { Link } from "react-router-dom";
 import { logout } from "../redux/userSlice";
@@ -34,7 +35,17 @@ const Sidebar = () => {
   const handleDeleteDB = async (e) => {
     try {
       setLoading(true);
-      setProgress(20);
+      setProgress(0);
+
+      const interval = setInterval(() => {
+        setProgress((oldProgress) => {
+          if (oldProgress === 90) {
+            clearInterval(interval);
+            return 90;
+          }
+          return Math.min(oldProgress + 10, 90);
+        });
+      }, 500);
       const response = await axios({
         url: `${import.meta.env.VITE_API_URL}/database/destroy`,
         method: "delete",
@@ -42,6 +53,7 @@ const Sidebar = () => {
           Authorization: `Bearer ${user.token}`,
         },
       });
+      clearInterval(interval);
       setProgress(100);
       console.log("database erased successfully");
       setDeletedProducts(response.data);
@@ -54,8 +66,6 @@ const Sidebar = () => {
   };
   const handleRunDB = async (e) => {
     try {
-      setLoading(true);
-      setProgress(20);
       const response = await axios({
         url: `${import.meta.env.VITE_API_URL}/database/run-seeders`,
         method: "post",
@@ -63,14 +73,9 @@ const Sidebar = () => {
           Authorization: `Bearer ${user.token}`,
         },
       });
-      setProgress(100);
-
       console.log("database created successfully");
     } catch (error) {
-      setProgress(0);
       console.log(`Error creating the database`, error);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -138,9 +143,27 @@ const Sidebar = () => {
           <ListItem onClick={() => handleRunDB()}>
             <Button color="success">Run Database</Button>
           </ListItem>
+
           <ListItem onClick={() => handleDeleteDB()}>
             <Button color="danger">Delete Database</Button>
           </ListItem>
+          {loading && (
+            <ListItem>
+              <Box
+                sx={{ width: "100%", display: "flex", alignItems: "center" }}
+              >
+                <Box sx={{ width: "100%", mr: 1 }}>
+                  <LinearProgress variant="determinate" value={progress} />
+                </Box>
+                <Box sx={{ minWidth: 35 }}>
+                  <Typography
+                    variant="body2"
+                    color="text.secondary"
+                  >{`${Math.round(progress)}%`}</Typography>
+                </Box>
+              </Box>
+            </ListItem>
+          )}
         </Box>
         {user.token ? (
           <ListItem>

@@ -10,28 +10,30 @@ import {
   Box,
   Stack,
   Chip,
+  Input,
+  Select,
+  Option,
 } from "@mui/joy";
 import axios from "axios";
 import TitleApp from "../components/TitleApp";
-import { Link } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
-import { storeInfo } from "../redux/logsSlice";
+import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 function Home() {
   const logs = useSelector((state) => state.logs);
   const [cellphones, setCellPhones] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [product, setProduct] = useState([]);
+  const [inputValue, setInputValue] = useState("");
+  const [selectedBrand, setSelectedBrand] = useState("");
   const [productDeleted, setProductDeleted] = useState(false);
+  const [products, setProducts] = useState([]);
+  const [cellphonesFiltered, setCellPhonesFiltered] = useState([]);
   const dispatch = useDispatch();
 
   const items_Per_Page = 3;
-  const totalPages = Math.ceil(cellphones.length / items_Per_Page);
-  const handleChangePage = (newPage) => {
-    setCurrentPage(newPage);
-  };
-  const paginatedPhones = cellphones.slice(
+  const totalPages = Math.ceil(cellphonesFiltered.length / items_Per_Page);
+  const paginatedPhones = cellphonesFiltered.slice(
     (currentPage - 1) * items_Per_Page,
     currentPage * items_Per_Page
   );
@@ -41,32 +43,72 @@ function Home() {
 
   useEffect(() => {
     const getCellphones = async () => {
-      const response = await axios({
-        url: `${import.meta.env.VITE_API_URL}/cellphones`,
-        method: "get",
-      });
-      setCellPhones(response.data);
+      try {
+        const response = await axios({
+          url: `${import.meta.env.VITE_API_URL}/cellphones`,
+          method: "get",
+        });
+        setCellPhones(response.data);
+        setProducts(response.data);
+        setCellPhonesFiltered(response.data); // Inicialmente mostramos todos los celulares
+      } catch (error) {
+        console.error("Error fetching cellphones:", error);
+      }
     };
     getCellphones();
     setProductDeleted(false);
   }, [productDeleted]);
 
+  useEffect(() => {
+    handleSearchChange({ target: { value: inputValue } }); // Actualiza los resultados filtrados al cargar
+  }, [cellphones, inputValue, selectedBrand]);
+
+  const handleChangePage = (newPage) => {
+    setCurrentPage(newPage);
+  };
+
+  const handleSearchChange = (e) => {
+    const value = e.target.value;
+    setInputValue(value);
+    filterProducts(value, selectedBrand);
+    setCurrentPage(1);
+  };
+
+  const handleBrandSelect = (e, value) => {
+    setSelectedBrand(value);
+    filterProducts(inputValue, value);
+    setCurrentPage(1);
+  };
+
+  const filterProducts = (searchValue, brand) => {
+    const filtered = cellphones.filter(
+      (p) =>
+        p.name.toUpperCase().includes(searchValue.toUpperCase()) &&
+        (brand ? p.brand === brand : true)
+    );
+    setCellPhonesFiltered(filtered);
+  };
+
   const handleDeleteProduct = async (id) => {
     try {
-      const response = await axios({
-        url: `${import.meta.env.VITE_API_URL}/client/${id}`,
-        method: "delete",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      setProduct(product.filter((product) => product.id !== id));
-      setProductDeleted(dispatch(storeInfo(response.data.cellphoneDeleted)));
+      const response = await axios.delete(
+        `${import.meta.env.VITE_API_URL}/client/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setCellPhones(cellphones.filter((product) => product.id !== id));
+      setProductDeleted(true);
       console.log("Product deleted");
     } catch (error) {
       console.error("Error deleting product:", error);
     }
   };
+
+  const uniqueBrands = [...new Set(products.map((product) => product.brand))];
+
   return (
     <>
       <Sidebar />
@@ -82,6 +124,37 @@ function Home() {
         }}
       >
         <TitleApp />
+        <Box
+          sx={{
+            marginBottom: 2,
+            display: "flex",
+            justifyContent: "space-between",
+            width: "100%",
+            maxWidth: 1100,
+          }}
+        >
+          <Input
+            placeholder="Search products"
+            type="text"
+            value={inputValue}
+            onChange={handleSearchChange}
+            sx={{ marginRight: 2 }}
+          />
+          <Select
+            placeholder="Select brand"
+            value={selectedBrand}
+            onChange={handleBrandSelect}
+            sx={{ width: 200 }}
+          >
+            <Option value="">All Brands</Option>
+            {uniqueBrands.map((brand, index) => (
+              <Option key={index} value={brand}>
+                {brand}
+              </Option>
+            ))}
+          </Select>
+        </Box>
+
         <Grid alignItems={"center"} container spacing={2}>
           {paginatedPhones.map((phone) => (
             <Grid key={phone.id} item="true" xs={12} sm={6} md={4}>
@@ -208,4 +281,5 @@ function Home() {
     </>
   );
 }
+
 export default Home;

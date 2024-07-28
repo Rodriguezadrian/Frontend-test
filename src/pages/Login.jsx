@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import {
   Box,
   Button,
+  Divider,
   FormControl,
   FormLabel,
   Input,
@@ -116,6 +117,33 @@ function Login() {
               >
                 Not registered yet?
               </Link>
+            </Typography>
+          </Box>
+          <Box
+            sx={{
+              mt: 2,
+              p: 2,
+              border: "1px solid #ccc",
+              borderRadius: "4px",
+              backgroundColor: "#f9f9f9",
+            }}
+          >
+            <Typography variant="body1" component="p" fontWeight="bold">
+              Test Users:
+            </Typography>
+            <Divider />
+            <Typography variant="body2" component="p">
+              <strong>User:</strong> test@test.com
+            </Typography>
+            <Typography variant="body2" component="p">
+              <strong>Password:</strong> 1234
+            </Typography>
+            <Divider />
+            <Typography variant="body2" component="p">
+              <strong>Admin:</strong> admin@gmail.com
+            </Typography>
+            <Typography variant="body2" component="p">
+              <strong>Password:</strong> 1234
             </Typography>
           </Box>
         </form>
