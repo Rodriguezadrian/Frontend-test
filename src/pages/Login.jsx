@@ -35,7 +35,7 @@ function Login() {
         method: "post",
         data: { email, password },
       });
-
+      
       if (response.data.token) {
         dispatch(login(response.data));
         navigate("/");
