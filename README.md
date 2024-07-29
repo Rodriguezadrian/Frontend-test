@@ -11,4 +11,4 @@ This project is a frontend application for viewing and managing a cellphone API.
 
 ## Author
 
-This project was created by Adrian Rodriguez (rgadrian.93@gmail.com) as part of a technical test.
+This project was created by Adrian Rodriguez (rgadrian.93@gmail.com) as part of a technical test
